@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 function App() {
-  const Div = styled.section`
+  const Modal = styled.section`
     width: 28.5rem;
     height: 31.56rem;
     border-radius: 0.8rem;
@@ -32,15 +32,27 @@ function App() {
     cursor: pointer;
   `;
 
-  const AccoutTrasfer = styled.div`
+  const Pane = styled.div`
     display: flex;
-    margin: 1.5rem 1rem 0 1rem;
+    margin: 1.5rem 1rem 1rem 1rem;
     align-items: center;
   `;
-  const AccountTitle = styled.div`
-    margin-bottom: 0.7rem;
+  const Column = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 0 1rem;
+  `;
+
+  const TitleContainer = styled.div`
+    margin-bottom: 0.8rem;
+  `;
+  const Title = styled.div`
+    font-size: 0.7rem;
+  `;
+  const TitleBold = styled.div`
     font-weight: bold;
   `;
+
   const AccountToIcon = styled.div`
     flex: 1;
     font-size: 0.7rem;
@@ -61,7 +73,7 @@ function App() {
   const AccountAvatarContainer = styled.div`
     flex: 2;
   `;
-  const AccountAvatarLeft = styled.div`
+  const AvatarGrey = styled.div`
     border-radius: 50rem;
     width: 1.7rem;
     height: 1.7rem;
@@ -69,7 +81,7 @@ function App() {
     margin-left: 1rem;
     margin-right: 0.5rem;
   `;
-  const AccountAvatarRight = styled.div`
+  const AvatarWhite = styled.div`
     border-radius: 50rem;
     width: 1.7rem;
     height: 1.7rem;
@@ -85,8 +97,23 @@ function App() {
     cursor: pointer;
   `;
 
+  const SelectAmountTitle = styled.div`
+    display: flex;
+    font-size: 0.8rem;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  `;
+  const SelectAmoutInput = styled.div`
+    width: 100%;
+    height: 4rem;
+    margin-top: 0.8rem;
+    border: 0.1rem solid #384049;
+    border-radius: 0.3rem;
+  `;
+
   return (
-    <Div>
+    <Modal>
       <Header>
         <HeaderTitle>
           <TextWhite>Deposit Atom</TextWhite>
@@ -96,14 +123,16 @@ function App() {
         </Button>
       </Header>
 
-      <AccoutTrasfer>
+      <Pane>
         <AccountContainer>
-          <AccountTitle>
-            <TextGrey>From Cosmos Hub</TextGrey>
-          </AccountTitle>
+          <TitleContainer>
+            <TitleBold>
+              <TextGrey>From Cosmos Hub</TextGrey>
+            </TitleBold>
+          </TitleContainer>
           <AccountIput>
             <AccountAvatarContainer>
-              <AccountAvatarLeft />
+              <AvatarGrey />
             </AccountAvatarContainer>
             <AccountHash>
               <TextGrey>atom1xy5y...m6wwz9a</TextGrey>
@@ -114,12 +143,14 @@ function App() {
           <TextGrey>→</TextGrey>
         </AccountToIcon>
         <AccountContainer>
-          <AccountTitle>
-            <TextGrey>To Osmosis</TextGrey>
-          </AccountTitle>
+          <TitleContainer>
+            <TitleBold>
+              <TextGrey>To Osmosis</TextGrey>
+            </TitleBold>
+          </TitleContainer>
           <AccountIput>
             <AccountAvatarContainer>
-              <AccountAvatarRight />
+              <AvatarWhite />
             </AccountAvatarContainer>
             <AccountHash>
               <TextGrey>osom1xy5y...w9a</TextGrey>
@@ -129,8 +160,22 @@ function App() {
             </AccountIconPen>
           </AccountIput>
         </AccountContainer>
-      </AccoutTrasfer>
-    </Div>
+      </Pane>
+
+      <Column>
+        <SelectAmountTitle>
+          <TitleBold>
+            <TextGrey>Select amount</TextGrey>
+          </TitleBold>
+          <Title>
+            <TextGrey>Available 2 ATOM</TextGrey>
+          </Title>
+        </SelectAmountTitle>
+        <SelectAmoutInput>
+          <AvatarGrey></AvatarGrey>
+        </SelectAmoutInput>
+      </Column>
+    </Modal>
   );
 }
 
