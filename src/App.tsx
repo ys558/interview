@@ -9,6 +9,7 @@ import {
   avatarGrey,
   toolTipBgColor,
   inputBorderRadius,
+  modalBgColor,
 } from "./const";
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
     width: 28.5rem;
     height: 31.56rem;
     border-radius: 0.8rem;
-    background: #212328;
+    background: ${modalBgColor};
   `;
   const HeaderTitle = styled.div`
     font-size: 1.1rem;
@@ -74,11 +75,18 @@ function App() {
     font-weight: normal;
     font-size: 0.7rem;
   `;
-  const Container = styled(Pane)<{ $justifyContent?: string }>`
+  type ContainterPropsTypes = {
+    $justifyContent?: string;
+    $flex?: string;
+    $borderLeft?: string;
+  };
+  const Container = styled(Pane)<ContainterPropsTypes>`
     align-items: baseline;
     margin: 0;
     justify-content: ${(props) => props.$justifyContent ?? "flex-start"};
     width: 100%;
+    flex: ${(props) => props.$flex ?? "1"};
+    border-left: ${(props) => props.$borderLeft ?? "none"};
   `;
   const InputContainer = styled.div`
     border-radius: ${inputBorderRadius};
@@ -92,7 +100,7 @@ function App() {
     width: 1.7rem;
     height: 1.7rem;
     margin-left: 1rem;
-    margin-right: 0.5rem;
+    margin-right: 1rem;
     background-color: ${(props) => props.$color};
     padding: ${(props) => props.$size ?? 0};
   `;
@@ -119,7 +127,7 @@ function App() {
     font-weight: bold;
   `;
 
-  const Indicator = styled.div`
+  const Indicator = styled(InputContainer)`
     background-color: ${black};
     width: 100%;
     height: 2.3rem;
@@ -142,11 +150,35 @@ function App() {
   `;
 
   const IconContainer = styled.div`
-    margin: 1rem;
+    margin: 0.8rem;
     cursor: pointer;
   `;
-  const Image = styled.img`
-    width: 0.75rem;
+  const Image = styled.img<{ width?: string }>`
+    width: ${(props) => props.width ?? "0.75rem"};
+  `;
+  const Text = styled.div<{ $fontSize?: string }>`
+    font-size: ${(props) => props.$fontSize ?? "0.6rem"};
+    color: ${textGrey};
+    margin: 0 0.3rem;
+  `;
+  const TextBold = styled(Text)`
+    font-weight: bolder;
+  `;
+
+  type InputProps = {
+    $width?: string;
+    $height?: string;
+    $bgColor?: string;
+    $paddingLeft?: string;
+  };
+  const Input = styled.input<InputProps>`
+    width: ${(props) => props.$width ?? "3rem"};
+    height: ${(props) => props.$height ?? "3.7rem"};
+    background-color: ${(props) => props.$bgColor ?? "none"};
+    border: none;
+    color: ${white};
+    font-size: 1rem;
+    padding-left: ${(props) => props.$paddingLeft ?? "1rem"};
   `;
 
   return (
@@ -159,15 +191,15 @@ function App() {
       <Pane>
         <AccountSection $flex="10">
           <Title>From Cosmos Hub</Title>
-          <InputContainer color={`${black}`}>
-            <Avatar $color={`${avatarGrey}`} />
+          <InputContainer color={black}>
+            <Avatar $color={avatarGrey} />
             <AccountHash $fontSize="0.7rem">atom1xy5y...m6wwz9a</AccountHash>
           </InputContainer>
         </AccountSection>
         <AccountToIcon>→</AccountToIcon>
         <AccountSection $flex="7">
           <Title>From Cosmos Hub</Title>
-          <InputContainer color={`${black}`}>
+          <InputContainer color={black}>
             <Avatar $color={`${white}`} />
             <AccountHash $fontSize="0.7rem">atom1xy5y...m6wwz9a</AccountHash>
             <IconContainer>
@@ -183,8 +215,17 @@ function App() {
           <SubTitle>Avaliable 2 ATOM</SubTitle>
         </Container>
         <InputContainerMax>
-          <Container>
-            <Avatar $color={`${avatarGrey}`} $size="0.43rem" />
+          <Container $flex="1">
+            <Avatar $color={avatarGrey} $size="0.43rem" />
+          </Container>
+          <Container $flex="8" $borderLeft={`0.12rem solid ${borderGrey}`}>
+            <Input type="number" $width="100%" $bgColor={modalBgColor} />
+          </Container>
+          <Container $flex="1" $justifyContent="flex-end">
+            <TextBold>ATOM</TextBold>
+          </Container>
+          <Container $flex="2">
+            <Text>≈ $1,013</Text>
           </Container>
         </InputContainerMax>
         <Container $justifyContent="flex-end">
@@ -195,10 +236,16 @@ function App() {
       </Pane>
 
       <Pane $isColumn={true}>
-        <Indicator></Indicator>
+        <Indicator>
+          <IconContainer>
+            <Image src="clock.png" width="1rem" />
+          </IconContainer>
+          <Text $fontSize="0.85rem">Estimated time:</Text>
+          <TextBold $fontSize="0.8rem">20 seconds</TextBold>
+        </Indicator>
         <Button
-          $bgColor={`${white}`}
-          $fontColor={`${black}`}
+          $bgColor={white}
+          $fontColor={black}
           $width="100%"
           $height="3.8rem"
         >

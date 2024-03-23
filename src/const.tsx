@@ -6,3 +6,4 @@ export const black = "#151317";
 export const avatarGrey = "#3a394c";
 export const toolTipBgColor = "#2b3138";
 export const inputBorderRadius = "0.3rem";
+export const modalBgColor = "#212328";
