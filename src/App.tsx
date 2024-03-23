@@ -1,50 +1,63 @@
-import { ReactNode } from "react";
-import styled from "styled-components";
+import { ReactNode, useState } from "react";
+import styled, { ThemeProvider } from "styled-components";
 import {
-  bgGrey,
+  themes,
   white,
   textGrey,
-  borderGrey,
-  black,
   avatarGrey,
-  toolTipBgColor,
   inputBorderRadius,
-  modalBgColor,
 } from "./const";
 
+type ThemeName = keyof typeof themes;
 function App() {
-  const Modal = styled.section`
+  const [theme, setTheme] = useState<ThemeName>("dark");
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+  };
+  const activeTheme = themes[theme];
+  const {
+    backgroundColor,
+    textColor,
+    closeBtnBgColor,
+    inputBgColor,
+    border,
+    inputTextColor,
+    transferBtnBgColor,
+    transferBtnTextColor,
+  } = activeTheme;
+
+  const Modal = styled.section<{ $bgColor: string }>`
     width: 28.5rem;
     height: 31.56rem;
     border-radius: 0.8rem;
-    background: ${modalBgColor};
+    background: ${({ $bgColor }) => $bgColor};
   `;
-  const HeaderTitle = styled.div`
+  const HeaderTitle = styled.div<{ $textColor: string }>`
     font-size: 1.1rem;
     margin: 1rem;
-    color: #fff;
+    font-weight: bold;
+    color: ${({ $textColor }) => $textColor};
   `;
   const Header = styled.header`
     display: flex;
     align-items: flex-start;
   `;
-  type ButtonPropsTypes = {
+  type ButtonTypes = {
     $bgColor?: string;
-    $fontColor?: string;
     $fontSize?: string;
     $width?: string;
     $height?: string;
   };
-  const Button = styled.button<ButtonPropsTypes>`
-    background-color: ${(props) => props.$bgColor ?? bgGrey};
+  const Button = styled.button<ButtonTypes>`
+    background-color: ${({ $bgColor }) => $bgColor ?? closeBtnBgColor};
     border: none;
     border-radius: ${inputBorderRadius};
-    width: ${(props) => props.$width ?? "2rem"};
-    height: ${(props) => props.$height ?? "2rem"};
+    width: ${({ $width }) => $width ?? "2rem"};
+    height: ${({ $height }) => $height ?? "2rem"};
     margin: 0.8rem 0.8rem 0 auto;
     cursor: pointer;
-    color: ${(props) => props.$fontColor ?? white};
-    font-size: ${(props) => props.$fontSize ?? "1rem"};
+    color: ${textColor};
+    font-size: ${({ $fontSize }) => $fontSize ?? "1rem"};
   `;
 
   const Pane = styled.div<{ $isColumn?: boolean }>`
@@ -61,10 +74,10 @@ function App() {
     color: ${textGrey};
   `;
   const AccountSection = styled.div<{ $flex?: string; $height?: string }>`
-    flex: ${(props) => props.$flex};
+    flex: ${({ $flex }) => $flex};
     font-size: 0.8rem;
     border-radius: 1rem;
-    height: ${(props) => props.$height};
+    height: ${({ $height }) => $height};
   `;
   const Title = styled.div`
     margin-bottom: 0.8rem;
@@ -88,11 +101,11 @@ function App() {
     flex: ${(props) => props.$flex ?? "1"};
     border-left: ${(props) => props.$borderLeft ?? "none"};
   `;
-  const InputContainer = styled.div`
+  const InputContainer = styled.div<{ $bgColor?: string }>`
     border-radius: ${inputBorderRadius};
     display: flex;
     align-items: center;
-    background-color: ${(props) => props.color ?? black};
+    background-color: ${({ $bgColor }) => $bgColor ?? "transparent"};
     height: 3rem;
   `;
   const Avatar = styled.div<{ $color: string; $size?: string }>`
@@ -110,25 +123,31 @@ function App() {
     font-size: ${({ $fontSize }) => $fontSize};
   `;
 
-  const InputContainerMax = styled(InputContainer)`
+  type InputContainerMaxType = {
+    $bgColor?: string;
+    $borderColor: string;
+  };
+  const InputContainerMax = styled(InputContainer)<InputContainerMaxType>`
     width: 100%;
     background: none;
-    border: 0.12rem solid ${borderGrey};
+    background-color: ${({ $bgColor }) => $bgColor ?? "none"};
+    border: 1px solid ${({ $borderColor }) => $borderColor};
     height: 4rem;
   `;
   const ToolTip = styled.div<{ $lastElement?: boolean }>`
     color: ${textGrey};
-    background-color: ${toolTipBgColor};
+    background-color: ${closeBtnBgColor};
     padding: 0.3rem 0.5rem;
     font-size: 0.7rem;
     border-radius: ${inputBorderRadius};
     margin-right: ${(props) => (props.$lastElement ? "0" : "0.6rem")};
     margin-top: 0.5rem;
     font-weight: bold;
+    cursor: pointer;
   `;
 
   const Indicator = styled(InputContainer)`
-    background-color: ${black};
+    background-color: ${inputBgColor};
     width: 100%;
     height: 2.3rem;
     border-radius: ${inputBorderRadius};
@@ -157,11 +176,12 @@ function App() {
     width: ${(props) => props.width ?? "0.75rem"};
   `;
   const Text = styled.div<{ $fontSize?: string }>`
-    font-size: ${(props) => props.$fontSize ?? "0.6rem"};
+    font-size: ${({ $fontSize }) => $fontSize ?? "0.7rem"};
     color: ${textGrey};
     margin: 0 0.3rem;
   `;
   const TextBold = styled(Text)`
+    color: ${textColor};
     font-weight: bolder;
   `;
 
@@ -170,90 +190,104 @@ function App() {
     $height?: string;
     $bgColor?: string;
     $paddingLeft?: string;
+    $color?: string;
   };
   const Input = styled.input<InputProps>`
-    width: ${(props) => props.$width ?? "3rem"};
-    height: ${(props) => props.$height ?? "3.7rem"};
+    width: ${({ $width }) => $width ?? "3rem"};
+    height: ${({ $height }) => $height ?? "3.9rem"};
     background-color: ${(props) => props.$bgColor ?? "none"};
     border: none;
-    color: ${white};
+    color: ${inputTextColor};
     font-size: 1rem;
     padding-left: ${(props) => props.$paddingLeft ?? "1rem"};
   `;
+  const ButtonTransfer = styled(Button)`
+    background-color: ${transferBtnBgColor};
+    color: ${transferBtnTextColor};
+  `;
+
+  const ToggleThemeButton = styled(Button)`
+    margin-bottom: 1rem;
+  `;
 
   return (
-    <Modal>
-      <Header>
-        <HeaderTitle>Deposit Atom</HeaderTitle>
-        <Button $fontColor="white">X</Button>
-      </Header>
+    <ThemeProvider theme={activeTheme}>
+      <ToggleThemeButton
+        $width="10rem"
+        onClick={toggleTheme}
+        $bgColor={backgroundColor}
+      >
+        Toggle theme: {theme}
+      </ToggleThemeButton>
 
-      <Pane>
-        <AccountSection $flex="10">
-          <Title>From Cosmos Hub</Title>
-          <InputContainer color={black}>
-            <Avatar $color={avatarGrey} />
-            <AccountHash $fontSize="0.7rem">atom1xy5y...m6wwz9a</AccountHash>
-          </InputContainer>
-        </AccountSection>
-        <AccountToIcon>→</AccountToIcon>
-        <AccountSection $flex="7">
-          <Title>From Cosmos Hub</Title>
-          <InputContainer color={black}>
-            <Avatar $color={`${white}`} />
-            <AccountHash $fontSize="0.7rem">atom1xy5y...m6wwz9a</AccountHash>
+      <Modal $bgColor={backgroundColor}>
+        <Header>
+          <HeaderTitle $textColor={textColor}>Deposit Atom</HeaderTitle>
+          <Button $bgColor={closeBtnBgColor}>X</Button>
+        </Header>
+
+        <Pane>
+          <AccountSection $flex="10">
+            <Title>From Cosmos Hub</Title>
+            <InputContainer $bgColor={inputBgColor}>
+              <Avatar $color={avatarGrey} />
+              <AccountHash $fontSize="0.7rem">atom1xy5y...m6wwz9a</AccountHash>
+            </InputContainer>
+          </AccountSection>
+          <AccountToIcon>→</AccountToIcon>
+          <AccountSection $flex="7">
+            <Title>From Cosmos Hub</Title>
+            <InputContainer $bgColor={inputBgColor}>
+              <Avatar $color={white} />
+              <AccountHash $fontSize="0.7rem">atom1xy5y...m6wwz9a</AccountHash>
+              <IconContainer>
+                <Image src="pencil.png" />
+              </IconContainer>
+            </InputContainer>
+          </AccountSection>
+        </Pane>
+
+        <Pane $isColumn={true}>
+          <Container $justifyContent="space-between">
+            <Title>Select Amount</Title>
+            <SubTitle>Avaliable 2 ATOM</SubTitle>
+          </Container>
+          <InputContainerMax $bgColor={backgroundColor} $borderColor={border}>
+            <Container $flex="1">
+              <Avatar $color={avatarGrey} $size="0.43rem" />
+            </Container>
+            <Container $flex="8" $borderLeft={`1px solid ${border}`}>
+              <Input type="number" $width="100%" $bgColor={backgroundColor} />
+            </Container>
+            <Container $flex="1" $justifyContent="flex-end">
+              <TextBold>ATOM</TextBold>
+            </Container>
+            <Container $flex="2">
+              <Text>≈ $1,013</Text>
+            </Container>
+          </InputContainerMax>
+          <Container $justifyContent="flex-end">
+            <ToolTip>Max</ToolTip>
+            <ToolTip>1/2</ToolTip>
+            <ToolTip $lastElement={true}>1/3</ToolTip>
+          </Container>
+        </Pane>
+
+        <Pane $isColumn={true}>
+          <Indicator>
             <IconContainer>
-              <Image src="pencil.png" />
+              <Image src="clock.png" width="1rem" />
             </IconContainer>
-          </InputContainer>
-        </AccountSection>
-      </Pane>
-
-      <Pane $isColumn={true}>
-        <Container $justifyContent="space-between">
-          <Title>Select Amount</Title>
-          <SubTitle>Avaliable 2 ATOM</SubTitle>
-        </Container>
-        <InputContainerMax>
-          <Container $flex="1">
-            <Avatar $color={avatarGrey} $size="0.43rem" />
-          </Container>
-          <Container $flex="8" $borderLeft={`0.12rem solid ${borderGrey}`}>
-            <Input type="number" $width="100%" $bgColor={modalBgColor} />
-          </Container>
-          <Container $flex="1" $justifyContent="flex-end">
-            <TextBold>ATOM</TextBold>
-          </Container>
-          <Container $flex="2">
-            <Text>≈ $1,013</Text>
-          </Container>
-        </InputContainerMax>
-        <Container $justifyContent="flex-end">
-          <ToolTip>Max</ToolTip>
-          <ToolTip>1/2</ToolTip>
-          <ToolTip $lastElement={true}>1/3</ToolTip>
-        </Container>
-      </Pane>
-
-      <Pane $isColumn={true}>
-        <Indicator>
-          <IconContainer>
-            <Image src="clock.png" width="1rem" />
-          </IconContainer>
-          <Text $fontSize="0.85rem">Estimated time:</Text>
-          <TextBold $fontSize="0.8rem">20 seconds</TextBold>
-        </Indicator>
-        <Button
-          $bgColor={white}
-          $fontColor={black}
-          $width="100%"
-          $height="3.8rem"
-        >
-          Transfer
-        </Button>
-        <StyledLink>Cancel</StyledLink>
-      </Pane>
-    </Modal>
+            <Text $fontSize="0.85rem">Estimated time:</Text>
+            <TextBold $fontSize="0.8rem">20 seconds</TextBold>
+          </Indicator>
+          <ButtonTransfer $width="100%" $height="3.8rem">
+            Transfer
+          </ButtonTransfer>
+          <StyledLink>Cancel</StyledLink>
+        </Pane>
+      </Modal>
+    </ThemeProvider>
   );
 }
 
