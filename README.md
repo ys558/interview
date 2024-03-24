@@ -22,7 +22,7 @@ in `src/App.tsx` use `styled compoent` to build the UI
 
 ## my self introduction audio
 
-<audio src="./self-introduction-audio.mp3" controls="controls"></audio>
+<a href="./self-introduction-audio.mp3">download my self introduction audio</a>
 
 ## my CV
 
