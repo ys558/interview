@@ -22,8 +22,8 @@ in `src/App.tsx` use `styled compoent` to build the UI
 
 ## my self introduction audio
 
-<a href="./self-introduction-audio.mp3">download my self introduction audio</a>
+download my self introduction audio, please click <a href="./self-introduction-audio.mp3">here</a>, jumping to new page, and click "View Raw" to download.
 
 ## my CV
 
-<a href="./Kyle_Yu_CV_Full-stack_7_yrs_exp.docx" download="CV.pdf">download my CV</a>
+download my CV, please click <a href="./Kyle_Yu_CV_Full-stack_7_yrs_exp.docx" download="CV.pdf">here</a>, jumping to new page, and click "View Raw" to download.
