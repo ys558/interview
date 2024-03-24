@@ -26,4 +26,4 @@ in `src/App.tsx` use `styled compoent` to build the UI
 
 ## my CV
 
-<a href="./Kyle_Yu_CV_Full-stack_7_yrs_exp" download="CV.pdf">download my CV</a>
+<a href="./Kyle_Yu_CV_Full-stack_7_yrs_exp.docx" download="CV.pdf">download my CV</a>
