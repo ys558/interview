@@ -19,3 +19,11 @@ run `npm run build` and drop the `dist` folder into your server.
 ## source code
 
 in `src/App.tsx` use `styled compoent` to build the UI
+
+## my self introduction audio
+
+<audio src="./self-introduction-audio.mp3" controls="controls"></audio>
+
+## my CV
+
+<a href="./Kyle_Yu_CV_Full-stack_7_yrs_exp" download="CV.pdf">download my CV</a>
